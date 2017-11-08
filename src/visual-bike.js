@@ -4,6 +4,10 @@
  * Created by davidtoy on 2017-June-13
  */
 
+import "snapsvg";
+import "snap.svg.zpd";
+export default drawBikeComparison;
+
 var input_bikes = [
     {
         'name': 'Giant Defy 2015 L',
@@ -96,7 +100,7 @@ function drawBikeComparison() {
     var bikecanvas = "#visual_bike",
         bikes = [],
         colours = ['#008744', '#0057e7', '#d62d20', '#ffa700'],
-        inputs = window.raw_bikes || input_bikes,
+        inputs = input_bikes,
         scale_factor = 4,
         paper = Snap.select(bikecanvas),
         bounds = {

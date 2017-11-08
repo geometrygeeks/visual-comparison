@@ -1,5 +1,5 @@
 
-var test_comparisons = {
+export default {
     'mid-travel-mtbs': [{
         "seat_angle": 73.599999999999994,
         "seatpost_diameter": 30.899999999999999,
