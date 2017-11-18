@@ -239,7 +239,8 @@ var test_comparisons = {
         "standover": 790.0,
         "wheelbase": 1003.0,
         "slug": 2017.0,
-        "head_tube": 140.0
+        "head_tube": 140.0,
+        "bb_drop": 65.0
     }, {
         "bike_slug": "specialized-shiv-2017",
         "title": "Specialized Shiv 2017 M",
