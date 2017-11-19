@@ -224,6 +224,8 @@ function drawBikeComparison() {
             this.r.frontwheel_cy = this.r.backwheel_cy;
             this.r.frontwheel_cx = this.r.backwheel_cx + this.i.wheelbase / scale_factor;
 
+        } else {
+            throw 'No wheel size defined for ' + this.i.title + '\n  We expect either bb_drop or bb_height and wheel_r to be defined.';
         }
 
         // bb_height - useful for figuring out where the ground is.
