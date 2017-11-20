@@ -1,0 +1,32 @@
+{
+  "name": "gg-bikes",
+  "version": "0.0.1",
+  "description": "Please read the [wiki page](https://github.com/geometrygeeks/visual-comparison/wiki). There isn't a website for this project yet.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --open --hot --config webpack.config.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdtoy/visual-comparison.git"
+  },
+  "author": "Geometry Geeks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jdtoy/visual-comparison/issues"
+  },
+  "homepage": "https://github.com/jdtoy/visual-comparison#readme",
+  "devDependencies": {
+    "imports-loader": "^0.7.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  },
+  "dependencies": {
+    "snap.svg.zpd": "0.0.11",
+    "snapsvg": "^0.5.1"
+  }
+}
