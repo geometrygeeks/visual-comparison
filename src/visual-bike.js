@@ -6,6 +6,8 @@ import "snap.svg.zpd";
 import defaultSettings from "./default-settings.js";
 import defaultTestBikes from "./default-input-bikes.js";
 import Bike from "./parse-geometry.js";
+import Draw from "./draw-bike-snapsvg.js";
+
 
 // TODO: Refactor draw function out of Bike() into a new module. Then...
 // TODO: import Draw from "./draw-bike.js"
@@ -51,6 +53,7 @@ function drawBikeComparison(bike_geometries, settings) {
 
     for (let i = 0; i < drawSettings['inputs'].length; i++) {
         var bike = new Bike(drawSettings['inputs'][i], drawSettings);
+        bike.draw = Draw;
         bikes.push(bike);
     };
 
@@ -67,11 +70,8 @@ function drawBikeComparison(bike_geometries, settings) {
     bounds.dx = bounds.x_max - bounds.x_min;
     bounds.dy = bounds.y_max - bounds.y_min;
 
-    // TODO: Refactor draw function out of Bike() into a new module. Then...
-    // TODO: Draw(bikes[i], ... );
-
     for (let i = 0; i < bikes.length; i++) {
-        bikes[i].draw(paper, drawSettings['colours'][i % drawSettings['colours'].length], 0, 0);
+        bikes[i].draw(paper, drawSettings['colours'][i % drawSettings['colours'].length], 0, 0, drawSettings);
     };
 
     bbox = paper.getBBox();
