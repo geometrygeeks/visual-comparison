@@ -230,7 +230,7 @@ var test_comparisons = {
         "bike_slug": "giant-trinity-advanced-pro-2017",
         "title": "Giant Trinity Advanced Pro 2017 M",
         "chainstay": 405.0,
-        "seat_angle": "74.7 / 76.2 / 78",
+        "seat_angle": 74.7,
         "year": 2017.0,
         "reach": 417.0,
         "stack": 539.0,
@@ -240,7 +240,8 @@ var test_comparisons = {
         "wheelbase": 1003.0,
         "slug": 2017.0,
         "head_tube": 140.0,
-        "bb_drop": 65.0
+        "bb_drop": 65.0,
+        "seat_tube_length": 515.0
     }, {
         "bike_slug": "specialized-shiv-2017",
         "title": "Specialized Shiv 2017 M",
