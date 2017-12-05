@@ -5,10 +5,9 @@ import "snap.svg.zpd";
 
 import defaultSettings from "./default-settings.js";
 import defaultTestBikes from "./default-input-bikes.js";
-import Bike from "./parse-geometry.js";
+import BikeGeometry from "./parse-geometry.js";
+import BikeDrawing from "./draw-bike-snapsvg.js";
 
-// TODO: Refactor draw function out of Bike() into a new module. Then...
-// TODO: import Draw from "./draw-bike.js"
 
 export default drawBikeComparison;
 
@@ -18,12 +17,13 @@ function drawBikeComparison(bike_geometries, settings) {
     var drawSettings = defaultSettings;
     // TODO: Extend drawSettings with settings
 
-    // TODO: Rename 'inputs' as unclear - these are the input geometries
-    // TodO: Possibly refactor inputs to be a separate object outside of drawSettings.
-    drawSettings['inputs'] = bike_geometries || defaultTestBikes;
+    // TodO: Possibly refactor inputsGeometries to be a separate object outside of drawSettings.
+    
+    drawSettings['inputsGeometries'] = bike_geometries || defaultTestBikes;
 
     var bikecanvas = "#visual_bike",
-        bikes = [],
+        bikeGeometries = [],
+        bikeDrawings = [],
         paper = Snap.select(bikecanvas),
         bounds = {
             x_min: 0,
@@ -34,59 +34,73 @@ function drawBikeComparison(bike_geometries, settings) {
         start_zoom,
         bbox;
 
-
-
-    function drawNames(bikes, paper, start_x, start_y) {
+    function drawNames(bikeGeometries, paper, start_x, start_y) {
         var height = 20,
             x = start_x,
             y = start_y - 2 * height,
             names = [];
 
-        for (var i = 0; i < bikes.length; i ++) {
-            names.push(paper.text(x, y, bikes[i].i.title ).attr({'fill': drawSettings['colours'][i % drawSettings['colours'].length]}))
+        for (var i = 0; i < bikeGeometries.length; i ++) {
+            names.push(paper.text(x, y, bikeGeometries[i].inputMeasurements.title ).attr({'fill': drawSettings['colours'][i % drawSettings['colours'].length]}))
             y -= height;
         }
 
     }
 
-    for (let i = 0; i < drawSettings['inputs'].length; i++) {
-        var bike = new Bike(drawSettings['inputs'][i], drawSettings);
-        bikes.push(bike);
-    };
-
-    for (let i = 0; i < bikes.length; i++) {
-        bounds.y_min = Math.min(bounds.y_min, bikes[i].r.min_y);
-        bounds.x_min = Math.min(bounds.x_min, bikes[i].r.min_x);
-        bounds.x_max = Math.max(bounds.x_max, bikes[i].r.max_x);
-        bounds.y_max = Math.max(bounds.y_max, bikes[i].r.max_y);
+    for (let i = 0; i < drawSettings['inputsGeometries'].length; i++) {
+        var rawGeometryData = drawSettings['inputsGeometries'][i];
+        var bike = new BikeGeometry(rawGeometryData, drawSettings);
+        bikeGeometries.push(bike);
     };
 
 
-    drawNames(bikes, paper, bounds.x_min, bounds.y_min);
-
-    bounds.dx = bounds.x_max - bounds.x_min;
-    bounds.dy = bounds.y_max - bounds.y_min;
-
-    // TODO: Refactor draw function out of Bike() into a new module. Then...
-    // TODO: Draw(bikes[i], ... );
-
-    for (let i = 0; i < bikes.length; i++) {
-        bikes[i].draw(paper, drawSettings['colours'][i % drawSettings['colours'].length], 0, 0);
+    for (let i = 0; i < bikeGeometries.length; i++) {
+        var drawing = new BikeDrawing(bikeGeometries[i], paper, drawSettings['colours'][i % drawSettings['colours'].length], 0, 0, drawSettings);
+        bikeDrawings.push(drawing);
     };
 
-    bbox = paper.getBBox();
-    start_zoom = Math.min($(bikecanvas).height()*0.9/bounds.dy, $(bikecanvas).width()*0.9/bounds.dx);
+    for (let i = 0; i < bikeDrawings.length; i++) {
+        bikeDrawings[i].draw();
+    };
+
+    for (let i = 0; i < bikeGeometries.length; i++) {
+        bounds.y_min = Math.min(bounds.y_min, bikeGeometries[i].resolvedPoint.min_y);
+        bounds.x_min = Math.min(bounds.x_min, bikeGeometries[i].resolvedPoint.min_x);
+        bounds.x_max = Math.max(bounds.x_max, bikeGeometries[i].resolvedPoint.max_x);
+        bounds.y_max = Math.max(bounds.y_max, bikeGeometries[i].resolvedPoint.max_y);
+    };
+
+    drawNames(bikeGeometries, paper, bounds.x_min, bounds.y_min);
 
     // Use snap.svg's zpd plugin.
+    // TODO: These could probably be moved to a separate snapsvg specific module.
 
-    paper.zpd();
+    // Calculate initial zoom values
+    bounds.dx = bounds.x_max - bounds.x_min;
+    bounds.dy = bounds.y_max - bounds.y_min;
+    start_zoom = Math.min($(bikecanvas).height()/bounds.dy, $(bikecanvas).width()/bounds.dx);
 
-    paper.zoomTo(
-        start_zoom, 0, null, function (err, paper) {
+    //bbox = paper.getBBox();
+
+    var loading_animation_bounce_factor = 0.95;
+
+    // TODO: Calculate initial offsets. 350 is a 'it works' placeholder.
+    var initial_x_offset = 350 * loading_animation_bounce_factor,
+        initial_y_offset = 350 * loading_animation_bounce_factor;
+
+    paper.zpd({
+        load: {
+                  a: start_zoom,        // Conversion Factor 'zoom'
+                  b: 0,
+                  c: 0,
+                  d: start_zoom,        // Conversion Factor 'zoom'
+                  e: initial_x_offset,               // Offset X
+                  f: initial_y_offset,               // Offset Y
+              }
+    }, function (err, paper) {
+        console.log(paper);
     });
 
-    paper.panTo(
-        $(bikecanvas).width()/2, $(bikecanvas).height()/2, 0, null, function (err, paper) {
-    });
+    paper.zoomTo(start_zoom * loading_animation_bounce_factor, 1350, mina.elastic);
 
 }
