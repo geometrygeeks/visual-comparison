@@ -98,7 +98,10 @@ function drawBikeComparison(bike_geometries, settings) {
                   f: initial_y_offset,               // Offset Y
               }
     }, function (err, paper) {
-        console.log(paper);
+        if (err){
+            console.log("SnapSVG error: '"+ err +"'");
+            console.log(paper);
+        }
     });
 
     paper.zoomTo(start_zoom * loading_animation_bounce_factor, 1350, mina.elastic);
