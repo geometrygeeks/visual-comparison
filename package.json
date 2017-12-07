@@ -7,8 +7,8 @@
     "example": "examples"
   },
   "scripts": {
-    "dev": "webpack-dev-server --open --hot --config webpack.config.js",
-    "build": "webpack --config webpack.config.js"
+    "dev": "webpack-dev-server --open --hot --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
@@ -22,8 +22,10 @@
   "homepage": "https://github.com/jdtoy/visual-comparison#readme",
   "devDependencies": {
     "imports-loader": "^0.7.1",
+    "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^2.9.4",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "snap.svg.zpd": "0.0.11",
