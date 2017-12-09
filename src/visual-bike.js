@@ -33,9 +33,12 @@ function drawBikeComparison(bike_geometries, settings) {
         },
         start_zoom,
         bbox;
+    paper.clear();
 
     function drawNames(bikeGeometries, paper, start_x, start_y) {
-        var height = 20,
+        var start_x = start_x || 0,
+            start_y = start_y || 0,
+            height = 20,
             x = start_x,
             y = start_y - 2 * height,
             names = [];
@@ -51,6 +54,14 @@ function drawBikeComparison(bike_geometries, settings) {
         var rawGeometryData = drawSettings['inputsGeometries'][i];
         var bike = new BikeGeometry(rawGeometryData, drawSettings);
         bikeGeometries.push(bike);
+        if (bike.error){
+            if (rawGeometryData.hasOwnProperty('title')){
+                console.log("WARNING! There was a problem with the " + rawGeometryData.title + " geometry. (Geometry " + (i+1) + ")");
+            } else {
+               console.log("WARNING! There was a problem with Geometry " + (i + 1) + ".");
+            }
+            console.log("Unable to calculate: " + bike.error_parameters);
+        }
     };
 
 
@@ -79,6 +90,10 @@ function drawBikeComparison(bike_geometries, settings) {
     bounds.dx = bounds.x_max - bounds.x_min;
     bounds.dy = bounds.y_max - bounds.y_min;
     start_zoom = Math.min($(bikecanvas).height()/bounds.dy, $(bikecanvas).width()/bounds.dx);
+
+    if (isNaN(start_zoom)){
+        start_zoom = 0.3;
+    }
 
     //bbox = paper.getBBox();
 

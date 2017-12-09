@@ -3,7 +3,8 @@ export default BikeGeometry;
 
 function BikeGeometry(initMeasurements, settings) {
 
-
+        this.error = false;
+        this.error_parameters = [];
 
         this.inputMeasurements = {
             // Define some default values / core assumptions.
@@ -21,10 +22,12 @@ function BikeGeometry(initMeasurements, settings) {
             this.inputMeasurements[attrname] = initMeasurements[attrname];
         }
 
+        // Remove degree symbols.
+        this.inputMeasurements['seat_angle'] = parseFloat(this.inputMeasurements['seat_angle']);
+        this.inputMeasurements['head_angle'] = parseFloat(this.inputMeasurements['head_angle']);
 
-        // This 'r' = resolved values -  resolved immediately when the Bike is instantiated.
-        // TODO: (Possibly?) create calculate() and inti() functions?
 
+        // Calculated values - resolved immediately when the Bike is instantiated.
         this.resolvedPoint = {};
 
         // Define origin - Bottom Bracket center x, y.
@@ -102,7 +105,9 @@ function BikeGeometry(initMeasurements, settings) {
 
         // Compute Wheel Radius
         if (this.inputMeasurements.hasOwnProperty('wheel_size')){
-            this.resolvedPoint.wheel_r = (this.inputMeasurements.wheel_size/2 + this.inputMeasurements.tire_width) / settings['scale_factor'];
+            if (this.inputMeasurements.wheel_size > 400){
+                this.resolvedPoint.wheel_r = (this.inputMeasurements.wheel_size/2 + this.inputMeasurements.tire_width) / settings['scale_factor'];
+            }
         }
 
         // Compute wheel height - either using bb_drop or bb_height - most manufs give one or other, sometimes both.
@@ -144,5 +149,16 @@ function BikeGeometry(initMeasurements, settings) {
         }
         this.resolvedPoint.min_x = this.resolvedPoint.backwheel_cx - this.resolvedPoint.wheel_r;
         this.resolvedPoint.max_x = this.resolvedPoint.frontwheel_cx + this.resolvedPoint.wheel_r;
+
+
+        // Final check for NaNs - compute errors
+        for (var property in this.resolvedPoint) {
+            if (this.resolvedPoint.hasOwnProperty(property)) {
+                if (this.resolvedPoint[property] !== this.resolvedPoint[property]) {
+                    this.error = true;
+                    this.error_parameters.push(property);
+                }
+            }
+        }
 
     };
