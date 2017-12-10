@@ -61,6 +61,8 @@ function drawBikeComparison(bike_geometries, settings) {
                console.log("WARNING! There was a problem with Geometry " + (i + 1) + ".");
             }
             console.log("Unable to calculate: " + bike.error_parameters);
+            console.log(bike);
+
         }
     };
 

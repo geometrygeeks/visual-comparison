@@ -9,8 +9,8 @@ function BikeGeometry(initMeasurements, settings) {
         this.inputMeasurements = {
             // Define some default values / core assumptions.
             // Values are in mm.
-            'wheel_size': 622, // 622 is 700c
-            'tire_width': 20,
+            'wheel_rim_r': 311, // 622 is 700c - Most road bikes and 29er MTBs
+            'tire_thickness_r': 30,   // Working value - Road bikes
             'head_tube_top_cap': 10,
             'head_tube_spacer': 15,
             'stem_height': 20,
@@ -104,11 +104,32 @@ function BikeGeometry(initMeasurements, settings) {
         }
 
         // Compute Wheel Radius
-        if (this.inputMeasurements.hasOwnProperty('wheel_size')){
-            if (this.inputMeasurements.wheel_size > 400){
-                this.resolvedPoint.wheel_r = (this.inputMeasurements.wheel_size/2 + this.inputMeasurements.tire_width) / settings['scale_factor'];
-            }
+
+        if (this.inputMeasurements.hasOwnProperty('wheel_outer_r')){
+            this.resolvedPoint.wheel_outer_r = this.inputMeasurements.wheel_outer_r;
+        } else if (this.inputMeasurements.hasOwnProperty('wheel_rim_r') && this.inputMeasurements.hasOwnProperty('tire_thickness_r')){
+            this.resolvedPoint.wheel_outer_r = this.inputMeasurements.wheel_rim_r + this.inputMeasurements.tire_thickness_r;
         }
+
+        // Compute Wheel Rim Radius
+        if (this.inputMeasurements.hasOwnProperty('wheel_rim_r')){
+            this.resolvedPoint.wheel_rim_r = this.inputMeasurements.wheel_rim_r;
+
+        } else if (this.inputMeasurements.hasOwnProperty('wheel_outer_r') && this.inputMeasurements.hasOwnProperty('tire_thickness_r')){
+            this.resolvedPoint.wheel_rim_r = this.inputMeasurements.wheel_outer_r - this.inputMeasurements.tire_thickness_r;
+        }
+
+        // Compute Tyre Thickness
+
+        if (this.inputMeasurements.hasOwnProperty('tire_thickness_r')){
+            this.resolvedPoint.tire_thickness_r = this.inputMeasurements.tire_thickness_r;
+
+        } else if (this.inputMeasurements.hasOwnProperty('wheel_outer_r') && this.inputMeasurements.hasOwnProperty('wheel_rim_r')){
+            this.resolvedPoint.tire_thickness_r = this.inputMeasurements.wheel_outer_r - this.inputMeasurements.wheel_rim_r;
+        }
+
+
+
 
         // Compute wheel height - either using bb_drop or bb_height - most manufs give one or other, sometimes both.
         if (this.inputMeasurements.hasOwnProperty('bb_drop')){
@@ -116,9 +137,9 @@ function BikeGeometry(initMeasurements, settings) {
             this.resolvedPoint.frontwheel_cy  = this.resolvedPoint.backwheel_cy;
             this.resolvedPoint.backwheel_cx = this.resolvedPoint.bb_cx - Math.sqrt( Math.pow(this.inputMeasurements.chainstay, 2) - Math.pow(this.inputMeasurements.bb_drop, 2)) / settings['scale_factor'];
             this.resolvedPoint.frontwheel_cx = this.resolvedPoint.backwheel_cx + this.inputMeasurements.wheelbase / settings['scale_factor'];
-        } else if (this.inputMeasurements.hasOwnProperty('bb_height') && this.resolvedPoint.hasOwnProperty('wheel_r')){
-            this.resolvedPoint.backwheel_cy = this.resolvedPoint.bb_cy + this.inputMeasurements.bb_height / settings['scale_factor'] - this.resolvedPoint.wheel_r  ;
-            this.resolvedPoint.backwheel_cx = this.resolvedPoint.bb_cx - Math.sqrt( Math.pow(this.inputMeasurements.chainstay/ settings['scale_factor'], 2) - Math.pow(Math.abs(this.resolvedPoint.wheel_r - this.inputMeasurements.bb_height / settings['scale_factor']), 2));
+        } else if (this.inputMeasurements.hasOwnProperty('bb_height') && this.resolvedPoint.hasOwnProperty('wheel_outer_r')){
+            this.resolvedPoint.backwheel_cy = this.resolvedPoint.bb_cy + this.inputMeasurements.bb_height / settings['scale_factor'] - this.resolvedPoint.wheel_outer_r  ;
+            this.resolvedPoint.backwheel_cx = this.resolvedPoint.bb_cx - Math.sqrt( Math.pow(this.inputMeasurements.chainstay/ settings['scale_factor'], 2) - Math.pow(Math.abs(this.resolvedPoint.wheel_outer_r - this.inputMeasurements.bb_height / settings['scale_factor']), 2));
             this.resolvedPoint.frontwheel_cy = this.resolvedPoint.backwheel_cy;
             this.resolvedPoint.frontwheel_cx = this.resolvedPoint.backwheel_cx + this.inputMeasurements.wheelbase / settings['scale_factor'];
 
@@ -129,7 +150,7 @@ function BikeGeometry(initMeasurements, settings) {
         if (this.inputMeasurements.hasOwnProperty('bb_height')){
             this.resolvedPoint.bb_height = this.inputMeasurements.bb_height / settings['scale_factor'];
         } else {
-            this.resolvedPoint.bb_height = this.resolvedPoint.wheel_r - this.inputMeasurements.bb_drop / settings['scale_factor'];
+            this.resolvedPoint.bb_height = this.resolvedPoint.wheel_outer_r - this.inputMeasurements.bb_drop / settings['scale_factor'];
         }
 
         // Compute seatpost top, if seatpost length available.
@@ -147,8 +168,8 @@ function BikeGeometry(initMeasurements, settings) {
         } else {
             this.resolvedPoint.min_y = this.resolvedPoint.stem_rear_y;
         }
-        this.resolvedPoint.min_x = this.resolvedPoint.backwheel_cx - this.resolvedPoint.wheel_r;
-        this.resolvedPoint.max_x = this.resolvedPoint.frontwheel_cx + this.resolvedPoint.wheel_r;
+        this.resolvedPoint.min_x = this.resolvedPoint.backwheel_cx - this.resolvedPoint.wheel_outer_r;
+        this.resolvedPoint.max_x = this.resolvedPoint.frontwheel_cx + this.resolvedPoint.wheel_outer_r;
 
 
         // Final check for NaNs - compute errors

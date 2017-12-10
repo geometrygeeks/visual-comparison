@@ -8,7 +8,7 @@ export default {
             "head_angle": 66.5,
             "year": 2017.0,
             "bb_type": 92.0,
-            "wheel_size": 584,
+            "wheel_rim_r": 292,
             "title": "Yeti SB5 2017 M",
             "slug": 52017.0,
             "bb_height": 338.0,
@@ -31,7 +31,7 @@ export default {
             "head_angle": 67.0,
             "year": 2016.0,
             "bb_type": "Threaded",
-            "wheel_size": 584,
+            "wheel_rim_r": 292,
             "seatpost_length": 400.0,
             "stack": 595.0,
             "bb_height": 334.0,
@@ -98,7 +98,7 @@ export default {
             "head_tube": 165.0
         },
         {
-            "wheel_size": 622,
+            "wheel_rim_r": 311,
             "bike_slug": "trek-domane-2016",
             "title": "Trek Domane 2016 54cm",
             "chainstay": 420.0,
@@ -138,7 +138,7 @@ export default {
             "front_centre": 584.0
         },
         {
-            "wheel_size": 622,
+            "wheel_rim_r": 311,
             "bike_slug": "enigma-evoke-3al-2-5v-2016",
             "title": "Enigma Evoke 3AL 2.5V 2016 55",
             "chainstay": 409.0,
@@ -159,7 +159,7 @@ export default {
     ],
     'racy-road': [
         {
-            "wheel_size": 622,
+            "wheel_rim_r": 311,
             "bike_slug": "cerv-lo-s5-2016",
             "type": "Road",
             "title": "Cerv\u00e9lo S5 2016 54",
@@ -282,7 +282,7 @@ export default {
     ],
     'chameleon_evolution-2008-2017': [
         {
-            "wheel_size": 559,
+            "wheel_rim_r": 279.5,
             "bike_slug": "santa-cruz-chameleon-2008-2012",
             "type": "Mountain",
             "title": "Santa Cruz Chameleon 2008-2012 Medium",
@@ -303,7 +303,7 @@ export default {
             "wheelbase": 1074.0
         },
         {
-            "wheel_size": 559,
+            "wheel_rim_r": 279.5,
             "bike_slug": "santa-cruz-chameleon-2013",
             "title": "Santa Cruz Chameleon 2013 M",
             "chainstay": 419.0,
@@ -328,7 +328,7 @@ export default {
             "head_angle": 67.5,
             "year": 2017.0,
             "bb_type": "Threaded",
-            "wheel_size": 584,
+            "wheel_rim_r": 292,
             "title": "Santa Cruz Chameleon 2017 M",
             "stack": 615.0,
             "bb_height": 315.0,
