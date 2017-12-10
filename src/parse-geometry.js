@@ -178,6 +178,7 @@ function BikeGeometry(initMeasurements, settings) {
                 if (this.resolvedPoint[property] !== this.resolvedPoint[property]) {
                     this.error = true;
                     this.error_parameters.push(property);
+                    delete this.resolvedPoint[property];
                 }
             }
         }

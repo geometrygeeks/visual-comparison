@@ -34,9 +34,12 @@ function drawBikeComparison(bike_geometries, settings) {
         },
         start_zoom,
         bbox;
+
+    paper.zpd('destroy')
     paper.clear();
 
     function drawNames(bikeDrawings, paper, start_x, start_y) {
+
         var start_x = start_x || 0,
             start_y = start_y || 0,
             height = 20,
