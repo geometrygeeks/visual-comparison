@@ -14,8 +14,8 @@ export default [
        'bb_drop': 50,  // positive bb drop is earthwards
        'rake': 48,
        'trail': 61,
-       'wheel_size': 622, // 622 is 700c
-       'tire_width': 20,
+       'wheel_rim_r': 311, // 622 is 700c
+       'tire_thickness_r': 20,
        'head_tube_top_cap': 10,
        'head_tube_spacer': 15,
        'stem_height': 20,
@@ -45,8 +45,8 @@ export default [
        'fork_length': 368,
        'seatpost_length': 330,
 
-       'wheel_size': 622, // 622 is 700c
-       'tire_width': 20,
+       'wheel_rim_r': 311, // 622 is 700c
+       'tire_thickness_r': 20,
        'head_tube_top_cap': 10,
        'head_tube_spacer': 15,
        'stem_height': 20,
@@ -74,8 +74,8 @@ export default [
        'fork_length': 368,
        'seatpost_length': 330,
 
-       'wheel_size': 622, // 622 is 700c
-       'tire_width': 20,
+       'wheel_rim_r': 311, // 622 is 700c
+       'tire_thickness_r': 20,
        'head_tube_top_cap': 10,
        'head_tube_spacer': 15,
        'stem_height': 20,

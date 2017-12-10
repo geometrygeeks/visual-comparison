@@ -18,7 +18,7 @@ function Drawing (bikeGeometry, paper, frameColour, x_offset, y_offset, settings
             fill: "transparent",
             "stroke-opacity": 0.8,
             stroke: "#aaa",
-            strokeWidth: this.i.tire_width / settings['scale_factor']
+            strokeWidth: this.r.tire_thickness_r / settings['scale_factor']
         };
 
     // Array for storing drawing objects.
@@ -45,10 +45,10 @@ function Drawing (bikeGeometry, paper, frameColour, x_offset, y_offset, settings
             "stroke-opacity": 0.5
         });
 
-        this.drawObjs['rear_wheel'] = paper.circle(this.r['backwheel_cx'], this.r['backwheel_cy'], this.r['wheel_r']).attr(wheelSeetings);
+        this.drawObjs['rear_wheel'] = paper.circle(this.r['backwheel_cx'], this.r['backwheel_cy'], (this.r['wheel_outer_r'] - this.r['tire_thickness_r']/2)).attr(wheelSeetings);
 
         if( this.r.hasOwnProperty('frontwheel_cx') && !isNaN(this.r['frontwheel_cx']) ){
-            this.drawObjs['front_wheel'] = paper.circle(this.r['frontwheel_cx'], this.r['frontwheel_cy'], this.r['wheel_r']).attr(wheelSeetings);
+            this.drawObjs['front_wheel'] = paper.circle(this.r['frontwheel_cx'], this.r['frontwheel_cy'], this.r['wheel_outer_r']).attr(wheelSeetings);
         }
 
         this.drawObjs['sr_circle'] = paper.circle(this.r['stack_reach_x'], this.r['stack_reach_y'], 5);
