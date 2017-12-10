@@ -2,15 +2,18 @@ export default Drawing;
 
 function Drawing (bikeGeometry, paper, frameColour, x_offset, y_offset, settings) {
 
-
     this.i = bikeGeometry.inputMeasurements;
     this.r = bikeGeometry.resolvedPoint;
+    this.frameColour = frameColour || "#AAAAAA";
 
-    var frameColour = frameColour || "#AAAAAA",
-        x_offset = x_offset || 0,
+    if (this.i.hasOwnProperty('name')) {
+        this.title = this.i.name;
+    }
+
+    var x_offset = x_offset || 0,
         y_offset = y_offset || 0,
         frameSettings = {
-            stroke: frameColour,
+            stroke: this.frameColour,
             strokeWidth: 4,
             "stroke-opacity": 1
         },
@@ -91,7 +94,7 @@ function Drawing (bikeGeometry, paper, frameColour, x_offset, y_offset, settings
         this.drawObjs['down_tube_round_end'] = paper.circle(this.r['head_tube_bottom_x'], this.r['head_tube_bottom_y'], 2);
         this.drawObjs['down_tube_straight'].attr(frameSettings);
         this.drawObjs['down_tube_round_end'].attr({
-            fill: frameColour,
+            fill: this.frameColour,
             strokeWidth: 4
         });
 

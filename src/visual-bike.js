@@ -21,9 +21,10 @@ function drawBikeComparison(bike_geometries, settings) {
     
     drawSettings['inputsGeometries'] = bike_geometries || defaultTestBikes;
 
+    this.bikeDrawings = [];
+
     var bikecanvas = "#visual_bike",
         bikeGeometries = [],
-        bikeDrawings = [],
         paper = Snap.select(bikecanvas),
         bounds = {
             x_min: 0,
@@ -35,7 +36,7 @@ function drawBikeComparison(bike_geometries, settings) {
         bbox;
     paper.clear();
 
-    function drawNames(bikeGeometries, paper, start_x, start_y) {
+    function drawNames(bikeDrawings, paper, start_x, start_y) {
         var start_x = start_x || 0,
             start_y = start_y || 0,
             height = 20,
@@ -43,8 +44,8 @@ function drawBikeComparison(bike_geometries, settings) {
             y = start_y - 2 * height,
             names = [];
 
-        for (var i = 0; i < bikeGeometries.length; i ++) {
-            names.push(paper.text(x, y, bikeGeometries[i].inputMeasurements.title ).attr({'fill': drawSettings['colours'][i % drawSettings['colours'].length]}))
+        for (var i = 0; i < bikeDrawings.length; i ++) {
+            names.push(paper.text(x, y, bikeDrawings[i].title ).attr({'fill': drawSettings['colours'][i % drawSettings['colours'].length]}))
             y -= height;
         }
 
@@ -69,11 +70,11 @@ function drawBikeComparison(bike_geometries, settings) {
 
     for (let i = 0; i < bikeGeometries.length; i++) {
         var drawing = new BikeDrawing(bikeGeometries[i], paper, drawSettings['colours'][i % drawSettings['colours'].length], 0, 0, drawSettings);
-        bikeDrawings.push(drawing);
+        this.bikeDrawings.push(drawing);
     };
 
-    for (let i = 0; i < bikeDrawings.length; i++) {
-        bikeDrawings[i].draw();
+    for (let i = 0; i < this.bikeDrawings.length; i++) {
+        this.bikeDrawings[i].draw();
     };
 
     for (let i = 0; i < bikeGeometries.length; i++) {
@@ -83,7 +84,7 @@ function drawBikeComparison(bike_geometries, settings) {
         bounds.y_max = Math.max(bounds.y_max, bikeGeometries[i].resolvedPoint.max_y);
     };
 
-    drawNames(bikeGeometries, paper, bounds.x_min, bounds.y_min);
+    drawNames(this.bikeDrawings, paper, bounds.x_min, bounds.y_min);
 
     // Use snap.svg's zpd plugin.
     // TODO: These could probably be moved to a separate snapsvg specific module.
