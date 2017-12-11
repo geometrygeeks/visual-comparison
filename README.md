@@ -1,6 +1,7 @@
 # visual-comparison
 
-Please read the [wiki page](https://github.com/geometrygeeks/visual-comparison/wiki). There isn't a website for this project yet.
+Please read the [wiki page](https://github.com/geometrygeeks/visual-comparison/wiki).
+There isn't a website for this project yet.
 
 ### Screenshot
 
@@ -8,8 +9,9 @@ Please read the [wiki page](https://github.com/geometrygeeks/visual-comparison/w
 
 ### Development
 
+Help welcome! This is an ongoing project. All contributors (of code, issues, or coffee) get early preview access to this visualisation on [geometrygeeks.com](https://geometrygeeks.com). Hit up david at geometrygeeks dot bike for a sneak peek.
 
-This project uses [webpack](https://webpack.js.org/).
+If you are writing code, this project uses [webpack](https://webpack.js.org/).
 Installation instructions here: [https://webpack.js.org/guides/installation/](https://webpack.js.org/guides/installation/).
 
 After installation two commands are available:
