@@ -26,6 +26,16 @@ function BikeGeometry(initMeasurements, settings) {
         this.inputMeasurements['seat_angle'] = parseFloat(this.inputMeasurements['seat_angle']);
         this.inputMeasurements['head_angle'] = parseFloat(this.inputMeasurements['head_angle']);
 
+        // Fix numeric sense of bottom bracket 'drop'.
+        if (this.inputMeasurements.hasOwnProperty('bb_drop')){
+            this.inputMeasurements['bb_drop'] = this.inputMeasurements['bb_drop'] + '';             // Force to string.
+            this.inputMeasurements['bb_drop'] = this.inputMeasurements['bb_drop'].trim();
+            if (this.inputMeasurements['bb_drop'].charAt(0) === "+" || this.inputMeasurements['bb_drop'].charAt(0) === "-"){
+                this.inputMeasurements['bb_drop'] = parseFloat(this.inputMeasurements['bb_drop']) * -1;
+            } else {
+                this.inputMeasurements['bb_drop'] = parseFloat(this.inputMeasurements['bb_drop']);
+            }
+        }
 
         // Calculated values - resolved immediately when the Bike is instantiated.
         this.resolvedPoint = {};
